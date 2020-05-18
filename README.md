@@ -43,8 +43,11 @@ kubectl create -f ingress.yaml
 ```
 Note: Uncomment your desired ingress
 8. Enter to Jaeger
+![Alt text](images/jaeger1.png?raw=true "Exec")
 9. Access your app to generate some span in Jaeger
 10. Choose in the Service dropdown my-traced-service o my-hello-service depending in the case
+![Alt text](images/jaeger2.png?raw=true "Exec")
+
 Enjoy it!
 ## Comming up
 The next release will include the metrics in Prometheus
