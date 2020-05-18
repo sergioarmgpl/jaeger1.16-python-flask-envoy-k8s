@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: jaeger-app
+  name: jaeger-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaeger-app
+  template:
+    metadata:
+      labels:
+        app: jaeger-app
+    spec:
+      containers:
+      - image: youruser/image-name
+        imagePullPolicy: Always
+        name: jaeger-app-flask

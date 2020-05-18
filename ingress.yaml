@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+#    kubernetes.io/ingress.class: gloo
+    kubernetes.io/ingress.class: nginx
+  name: jaeger-public
+  namespace: observability
+spec:
+  rules:
+    - host: domain.xyz
+      http:
+        paths:
+          - backend:
+              serviceName: simplest-query
+              servicePort: 16686
+            path: /.*
