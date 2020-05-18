@@ -49,6 +49,11 @@ Enjoy it!
 ## Comming up
 The next release will include the metrics in Prometheus
 
+## Ingress Notes
+install nginx-ingress with helm for quickstart
+install gloo ingress with this link: https://docs.solo.io/gloo/1.1.0/installation/ingress
+
 ## References
 1. https://opentelemetry-python.readthedocs.io/en/stable/getting-started.html
-2. 
+2. https://www.jaegertracing.io/docs/1.16/operator/
+3. https://docs.solo.io/gloo/1.1.0/installation/ingress
