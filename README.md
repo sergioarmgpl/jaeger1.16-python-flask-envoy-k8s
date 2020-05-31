@@ -49,7 +49,7 @@ Note: Uncomment your desired ingress
 ![Alt text](images/jaeger2.png?raw=true "Exec")
 
 Enjoy it!
-## Comming up
+## Coming up
 The next release will include the metrics in Prometheus
 
 ## Ingress Notes
