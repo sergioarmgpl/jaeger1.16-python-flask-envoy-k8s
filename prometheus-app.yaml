@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: prometheus-app
+  name: prometheus-app
+  namespace: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-app
+  template:
+    metadata:
+      labels:
+        app: prometheus-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "5555"
+    spec:
+      containers:
+      - image: czdev/prometheus-example
+        imagePullPolicy: Always
+        name: prometheus-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: prometheus-app
+  name: prometheus-app-srv
+  namespace: observability
+spec:
+  ports:
+  - port: 5555
+    protocol: TCP
+    targetPort: 5555
+    nodePort: 30005
+  selector:
+    app: prometheus-app
+  type: NodePort
