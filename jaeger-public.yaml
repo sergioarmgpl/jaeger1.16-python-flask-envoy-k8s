@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2020-06-17T03:50:35Z"
+  labels:
+    app: jaeger
+    app.kubernetes.io/component: service-query
+    app.kubernetes.io/instance: simplest
+    app.kubernetes.io/managed-by: jaeger-operator
+    app.kubernetes.io/name: simplest-query
+    app.kubernetes.io/part-of: jaeger
+  name: simplest-query
+  namespace: observability
+  ownerReferences:
+  - apiVersion: jaegertracing.io/v1
+    controller: true
+    kind: Jaeger
+    name: simplest
+    uid: 7861e241-b653-41f7-b3ab-d5fa0890b73b
+  resourceVersion: "3790865"
+  selfLink: /api/v1/namespaces/observability/services/simplest-query
+  uid: 20fe82e4-37f4-4c31-87d0-b090ed292b73
+spec:
+  clusterIP: 10.245.75.59
+  ports:
+  - name: http-query
+    port: 16686
+    protocol: TCP
+    targetPort: 16686
+    nodePort: 30666
+  selector:
+    app: jaeger
+    app.kubernetes.io/component: all-in-one
+    app.kubernetes.io/instance: simplest
+    app.kubernetes.io/managed-by: jaeger-operator
+    app.kubernetes.io/name: simplest
+    app.kubernetes.io/part-of: jaeger
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

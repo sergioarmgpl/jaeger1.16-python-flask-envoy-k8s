@@ -4,7 +4,7 @@ metadata:
   labels:
     app: jaeger-app
   name: jaeger-app
-  namespace: default
+  namespace: observability
 spec:
   replicas: 1
   selector:
@@ -14,8 +14,30 @@ spec:
     metadata:
       labels:
         app: jaeger-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "5555"
     spec:
       containers:
-      - image: youruser/image-name
+      - image: czdev/jaeger-app-flask-metrics
         imagePullPolicy: Always
         name: jaeger-app-flask
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: jaeger-app
+  name: jaeger-app-srv
+  namespace: observability
+spec:
+  ports:
+  - port: 5555
+    protocol: TCP
+    targetPort: 5555
+    nodePort: 30001
+  selector:
+    app: jaeger-app
+  type: NodePort
