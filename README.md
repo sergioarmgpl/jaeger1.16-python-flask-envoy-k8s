@@ -4,7 +4,7 @@ This repository contains the files to install Jaeger 1.16 in to a K8s(tested in 
 1. Clone the repository
 ```
 git clone https://github.com/sergioarmgpl/jaeger1.16-python-flask-envoy-k8s.git
-cd jaeger1.16-python-flask-envoy-k8s.git
+cd jaeger1.16-python-flask-envoy-k8s
 ```
 2. Build your image choose between index.py or index_base.py and rename it as index.py
 the image is supposed that use the jaeger installation in the observability namespace.  index.py file generates span and metrics and index_basic.py just span
