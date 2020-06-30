@@ -35,7 +35,7 @@ kubectl create -f jaeger-app.yaml
 ```
 6. Expose your app with NodePort service type or as you want
 ```
-kubectl expose deployment/jaeger-app --port=5000 --target-port=5000 --type=NodePort
+kubectl expose deployment/jaeger-app --port=5000 --target-port=5000 --type=NodePort -n observability
 ```
 7. Create the ingress rule to expose Jaeger UI
 ```
