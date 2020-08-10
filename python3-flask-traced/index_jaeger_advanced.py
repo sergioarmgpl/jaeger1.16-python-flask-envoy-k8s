@@ -12,6 +12,8 @@ from opentelemetry.sdk.trace.export import SimpleExportSpanProcessor
 from opentelemetry.ext.flask import FlaskInstrumentor
 
 from opentelemetry.sdk.trace.export import BatchExportSpanProcessor
+from opentelemetry.ext.wsgi import OpenTelemetryMiddleware
+
 
 '''
 jaeger_exporter = jaeger.JaegerSpanExporter(
@@ -52,6 +54,8 @@ span_processor = BatchExportSpanProcessor(jaeger_exporter)
 trace.get_tracer_provider().add_span_processor(span_processor)
 
 app = flask.Flask(__name__)
+app.wsgi_app = OpenTelemetryMiddleware(app.wsgi_app)#wsgi
+
 FlaskInstrumentor().instrument_app(app)
 opentelemetry.ext.requests.RequestsInstrumentor().instrument()
 #--------------------------------------------------------------
