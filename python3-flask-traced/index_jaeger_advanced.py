@@ -100,6 +100,7 @@ def span_call_child():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("step1") as span1:
         requests.get("http://jaeger-app-2-srv-2:5555/example6")
+    return "simple call"
    
 
 if __name__ == '__main__':
