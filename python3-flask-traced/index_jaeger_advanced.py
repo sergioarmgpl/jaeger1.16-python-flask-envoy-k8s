@@ -23,13 +23,26 @@ app = flask.Flask(__name__)
 FlaskInstrumentor().instrument_app(app)
 opentelemetry.ext.requests.RequestsInstrumentor().instrument()
 
-@app.route("/")
-def hello():
+@app.route("/example1")
+def span_attributes():
     tracer = trace.get_tracer(__name__)
-    with tracer.start_as_current_span("step1"):
-        with tracer.start_as_current_span("step2"):
-            requests.get("cloudnative")
-    return "jaeger"
+    with tracer.start_as_current_span("step1") as span1:
+        span1.set_attribute("attribute1","value1")
+        with tracer.start_as_current_span("step2") as span2:
+            span2.set_attribute("attribute1","value1")
+    return "span and attributes"
+
+
+@app.route("/example2")
+def span_errors():
+    try:
+        n = 100/0
+    except Exception as e:
+        tracer = trace.get_tracer(__name__)
+        with tracer.start_as_current_span("step1"):
+            with tracer.start_as_current_span("step2") as span:
+                span.add_event("error occured",{"error": str(e)})
+        return "error",500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555, debug=True)
