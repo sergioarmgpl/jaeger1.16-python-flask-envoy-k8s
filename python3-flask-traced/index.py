@@ -1,4 +1,5 @@
 #tracing and metrics
+import time
 import flask
 import requests
 
@@ -29,8 +30,21 @@ def span_attributes():
     with tracer.start_as_current_span("step1") as span1:
         span1.set_attribute("attribute1","value1")
         with tracer.start_as_current_span("step2") as span2:
-            span2.set_attribute("attribute2","value2")
+            span2.set_attribute("attribute1","value1")
     return "span and attributes"
+
+@app.route("/example3")
+def span_attributes_slow():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("step1") as span1:
+        time.sleep(1)
+        span1.set_attribute("attribute1","value1")
+        time.sleep(1)
+        with tracer.start_as_current_span("step2") as span2:
+            time.sleep(1)
+            span2.set_attribute("attribute1","value1")
+            time.sleep(1)
+    return "span and attributes slow version"
 
 
 @app.route("/example2")
