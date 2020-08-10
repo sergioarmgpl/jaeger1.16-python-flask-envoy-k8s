@@ -11,9 +11,6 @@ from opentelemetry.sdk.trace.export import ConsoleSpanExporter
 from opentelemetry.sdk.trace.export import SimpleExportSpanProcessor
 from opentelemetry.ext.flask import FlaskInstrumentor
 
-from opentelemetry.sdk.trace.export import BatchExportSpanProcessor
-
-'''
 jaeger_exporter = jaeger.JaegerSpanExporter(
     service_name="my-traced-service", agent_host_name="simplest-agent.observability.svc.cluster.local", agent_port=6831
 )
@@ -26,37 +23,6 @@ trace.get_tracer_provider().add_span_processor(
 app = flask.Flask(__name__)
 FlaskInstrumentor().instrument_app(app)
 opentelemetry.ext.requests.RequestsInstrumentor().instrument()
-'''
-
-#--------------------------------------------------------------
-trace.set_tracer_provider(TracerProvider())
-tracer = trace.get_tracer(__name__)
-
-# create a JaegerSpanExporter
-jaeger_exporter = jaeger.JaegerSpanExporter(
-    service_name="my-traced-service", 
-    agent_host_name="simplest-agent.observability.svc.cluster.local", 
-    agent_port=6831,
-    # optional: configure also collector
-    # collector_host_name='localhost',
-    # collector_port=14268,
-    # collector_endpoint='/api/traces?format=jaeger.thrift',
-    # username=xxxx, # optional
-    # password=xxxx, # optional    
-)
-
-# Create a BatchExportSpanProcessor and add the exporter to it
-span_processor = BatchExportSpanProcessor(jaeger_exporter)
-
-# add to the tracer
-trace.get_tracer_provider().add_span_processor(span_processor)
-
-app = flask.Flask(__name__)
-FlaskInstrumentor().instrument_app(app)
-opentelemetry.ext.requests.RequestsInstrumentor().instrument()
-#--------------------------------------------------------------
-
-
 
 @app.route("/example1")
 def span_attributes():
