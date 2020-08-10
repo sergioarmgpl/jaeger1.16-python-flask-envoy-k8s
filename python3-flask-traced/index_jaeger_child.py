@@ -2,6 +2,7 @@
 import time
 import flask
 import requests
+from flask import request
 
 import opentelemetry.ext.requests
 from opentelemetry import trace
@@ -67,7 +68,7 @@ def span_attributes():
         span1.set_attribute("attribute1","value1")
         with tracer.start_as_current_span("step2") as span2:
             r = requests.get("http://jaeger-app-srv-2:5555/example1")
-            span2.set_attribute("attribute1",str(requests.headers))
+            span2.set_attribute("attribute1",str(request.headers))
             span2.set_attribute("response",str(r))
     return "distribute context"
 
