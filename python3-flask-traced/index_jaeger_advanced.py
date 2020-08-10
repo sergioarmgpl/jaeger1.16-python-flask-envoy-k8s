@@ -96,7 +96,7 @@ def span_errors():
         return "error",500
 
 @app.route("/example5")
-def span_attributes_slow():
+def span_call_child():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("step1") as span1:
         requests.get("http://jaeger-app-2-srv-2:5555/example6")

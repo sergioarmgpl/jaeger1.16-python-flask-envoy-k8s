@@ -73,7 +73,7 @@ def span_attributes():
     return "distribute context 1"
 
 @app.route("/example6")
-def span_attributes():
+def span_end_road():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("step1") as span1:
         span.add_event("end of the road",{"error": "no no no"})
