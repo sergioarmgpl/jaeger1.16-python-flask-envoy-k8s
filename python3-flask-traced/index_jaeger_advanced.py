@@ -95,5 +95,12 @@ def span_errors():
                 span.add_event("error occured",{"error": str(e)})
         return "error",500
 
+@app.route("/example5")
+def span_attributes_slow():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("step1") as span1:
+        requests.get("http://jaeger-app-2-srv-2:5555/example6")
+   
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555, debug=True)

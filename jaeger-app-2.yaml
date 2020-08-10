@@ -41,3 +41,19 @@ spec:
   selector:
     app: jaeger-app-2
   type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: jaeger-app-2
+  name: jaeger-app-2-srv-2
+  namespace: observability
+spec:
+  ports:
+  - port: 5555
+    protocol: TCP
+    targetPort: 5555
+  selector:
+    app: jaeger-app-2

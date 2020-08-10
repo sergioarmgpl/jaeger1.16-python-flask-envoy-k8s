@@ -70,7 +70,14 @@ def span_attributes():
             r = requests.get("http://jaeger-app-srv-2:5555/example1")
             span2.set_attribute("attribute1",str(request.headers))
             span2.set_attribute("response",str(r))
-    return "distribute context"
+    return "distribute context 1"
+
+@app.route("/example6")
+def span_attributes():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("step1") as span1:
+        span.add_event("end of the road",{"error": "no no no"})
+    return "distribute context 2"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555, debug=True)
