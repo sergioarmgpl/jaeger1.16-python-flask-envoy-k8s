@@ -6,4 +6,5 @@ opentelemetry-ext-jaeger
 opentelemetry-ext-flask
 opentelemetry-ext-requests
 opentelemetry-ext-prometheus
+opentelemetry-ext-http_requests
 prometheus_client
