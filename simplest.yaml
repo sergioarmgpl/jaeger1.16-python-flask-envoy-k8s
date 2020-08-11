@@ -29,7 +29,7 @@ spec:
       sparkMaster: // spark master connection string, when empty spark runs in embedded local mode
       resources:
         requests:
-          memory: 1024Mi
+          memory: 4096Mi
         limits:
           memory: 4096Mi      
   ingress:
