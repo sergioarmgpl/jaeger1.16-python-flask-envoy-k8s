@@ -4,16 +4,17 @@ metadata:
   name: simplest
   namespace: observability
 spec:
-  strategy: allInOne
-  allInOne:
-    image: jaegertracing/all-in-one:latest
-    options:
-      log-level: debug
- # storage:
- #   type: memory
- #   options:
- #     memory:
- #       max-traces: 100000
+#  strategy: allInOne
+  strategy: production
+#  allInOne:
+#    image: jaegertracing/all-in-one:latest
+#    options:
+#      log-level: debug
+#  storage:
+#    type: memory
+#    options:
+#      memory:
+#        max-traces: 100000
   storage:
     type: cassandra
     options: # <2>

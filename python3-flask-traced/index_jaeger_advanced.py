@@ -36,8 +36,9 @@ tracer = trace.get_tracer(__name__)
 
 # create a JaegerSpanExporter
 jaeger_exporter = jaeger.JaegerSpanExporter(
-    service_name="my-traced-service", 
-    agent_host_name="simplest-agent.observability.svc.cluster.local", 
+    service_name="TracedService1", 
+#    agent_host_name="simplest-agent.observability.svc.cluster.local", 
+    agent_host_name="jaeger-agent.observability.svc.cluster.local", 
     agent_port=6831,
     # optional: configure also collector
     # collector_host_name='localhost',
@@ -68,7 +69,7 @@ def span_attributes():
     with tracer.start_as_current_span("step1") as span1:
         span1.set_attribute("attribute1","value1")
         with tracer.start_as_current_span("step2") as span2:
-            span2.set_attribute("attribute2","value1")
+            span2.set_attribute("attribute2","value2")
     return "span and attributes"
 
 @app.route("/example3")
@@ -80,7 +81,7 @@ def span_attributes_slow():
         time.sleep(1)
         with tracer.start_as_current_span("step2") as span2:
             time.sleep(1)
-            span2.set_attribute("attribute2","value1")
+            span2.set_attribute("attribute2","value2")
             time.sleep(1)
     return "span and attributes slow version"
 

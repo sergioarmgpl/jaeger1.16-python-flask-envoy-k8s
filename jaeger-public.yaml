@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/managed-by: jaeger-operator
     app.kubernetes.io/name: simplest-query
     app.kubernetes.io/part-of: jaeger
-  name: simplest-query
+  name: simplest-query-nodeport
   namespace: observability
 spec:
   ports:
