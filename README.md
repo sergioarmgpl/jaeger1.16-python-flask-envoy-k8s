@@ -71,6 +71,14 @@ http://127.0.0.1:8080/
 10. Choose in the Service dropdown and try to find your traced service, after you generate some traces accessing this apps in the browser
 ![Alt text](images/jaeger2.png?raw=true "Exec")
 
+## How to access the apps
+1. http://IP:30001/example1 (app1)  
+2. http://IP:30001/example2 (app1)  
+3. http://IP:30001/example3 (app1)  
+4. http://IP:30002/example4 (app2)  
+5. http://IP:30001/example5 (app1)  
+6. http://IP:30002/example6 (app2)  
+
 ## Extra configuration
 You can check for additional files in this repo to use an ingress configuration to have access to Jaeger  
 ```
@@ -78,10 +86,9 @@ kubectl create -f ingress.yaml
 ```
 Note: Uncomment your desired ingress
 
-
 Enjoy it!
 ## Coming up
-The next release will include the metrics in Prometheus
+The next release will include the metrics in Prometheus, explanation, the actual repository contains a prometheus example but is not documented yet
 
 ## Ingress Notes
 install nginx-ingress with helm for quickstart
