@@ -4,35 +4,16 @@ metadata:
   name: simplest
   namespace: observability
 spec:
-#  strategy: allInOne
-  strategy: production
-#  allInOne:
-#    image: jaegertracing/all-in-one:latest
-#    options:
-#      log-level: debug
-#  storage:
-#    type: memory
-#    options:
-#      memory:
-#        max-traces: 100000
+  strategy: allInOne
+  allInOne:
+    image: jaegertracing/all-in-one:latest
+    options:
+      log-level: debug
   storage:
-    type: cassandra
-    options: # <2>
-      cassandra:
-        servers: cassandra
-        keyspace: jaeger_v1_datacenter3
-    cassandraCreateSchema: # <3>
-      datacenter: "datacenter3"
-      mode: "test"
-    dependencies:
-      enabled: true #turn the job deployment on and off
-      schedule: "*/2 * * * *" #// cron expression for it to run
-      sparkMaster: // spark master connection string, when empty spark runs in embedded local mode
-      resources:
-        requests:
-          memory: 4096Mi
-        limits:
-          memory: 4096Mi      
+    type: memory
+    options:
+      memory:
+        max-traces: 100000
   ingress:
     enabled: false
 #  agent:
