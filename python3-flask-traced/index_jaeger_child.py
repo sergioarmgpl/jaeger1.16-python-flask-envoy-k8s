@@ -62,10 +62,6 @@ FlaskInstrumentor().instrument_app(app)
 opentelemetry.ext.requests.RequestsInstrumentor().instrument()
 #--------------------------------------------------------------
 
-@app.route("/_health")
-def health():
-    return "simplest-agent.observability.svc.cluster.local"
-
 @app.route("/example4")
 def span_attributes():
     tracer = trace.get_tracer(__name__)

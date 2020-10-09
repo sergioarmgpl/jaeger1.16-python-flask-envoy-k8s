@@ -23,9 +23,6 @@ spec:
       - image: czdev/jaeger-app-flask-metrics-child
         imagePullPolicy: Always
         name: jaeger-app-2-flask
-      - name: sidecar-debug
-        image: busybox:1.28
-        command: ['sh', '-c', 'echo `cat /app/index.py`']
 ---
 apiVersion: v1
 kind: Service
