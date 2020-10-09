@@ -37,8 +37,8 @@ tracer = trace.get_tracer(__name__)
 # create a JaegerSpanExporter
 jaeger_exporter = jaeger.JaegerSpanExporter(
     service_name="TracedService1", 
-#    agent_host_name="simplest-agent.observability.svc.cluster.local", 
-    agent_host_name="jaeger-agent.observability.svc.cluster.local", 
+    agent_host_name="simplest-agent.observability.svc.cluster.local", 
+#    agent_host_name="jaeger-agent.observability.svc.cluster.local", 
     agent_port=6831,
     # optional: configure also collector
     # collector_host_name='localhost',
@@ -61,7 +61,9 @@ FlaskInstrumentor().instrument_app(app)
 opentelemetry.ext.requests.RequestsInstrumentor().instrument()
 #--------------------------------------------------------------
 
-
+@app.route("/_health")
+def health():
+    return "simplest-agent.observability.svc.cluster.local"
 
 @app.route("/example1")
 def span_attributes():
