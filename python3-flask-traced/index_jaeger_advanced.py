@@ -155,12 +155,11 @@ def span_parallel_example8_process1():
     with tracer.start_as_current_span("process1") as span1:
         span_parallel_example7_process2()
 
-async def span_parallel_example9_process2(loop):
+async def span_parallel_example9_process2():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("process2") as span1:
         time.sleep(1)
         print("do something")
-        loop.stop()
 
 async def span_parallel_example9_process1():
     tracer = trace.get_tracer(__name__)
