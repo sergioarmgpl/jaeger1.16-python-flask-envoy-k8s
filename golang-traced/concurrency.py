@@ -7,7 +7,7 @@ async def task1(what, when):
 async def task2(what, when, loop):
     await asyncio.sleep(when)
     print(what)
-    loop.stop()
+#    loop.stop()
 
 #async def end(loop, when):
 #    await asyncio.sleep(when)
@@ -15,8 +15,8 @@ async def task2(what, when, loop):
 
 loop = asyncio.get_event_loop()
 
-loop.create_task(task1('first hello', 2))
-loop.create_task(task2('second hello', 4,loop))
+loop.create_task(task1('first hello', 4))
+loop.create_task(task2('second hello', 1,loop))
 
 loop.run_forever()
 loop.close()

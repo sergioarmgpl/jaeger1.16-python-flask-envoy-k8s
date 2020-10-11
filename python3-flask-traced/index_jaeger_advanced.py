@@ -164,8 +164,8 @@ async def span_parallel_example9_process2():
 async def span_parallel_example9_process1():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("process1") as span1:
-        span_parallel_example7_process2()
-
+        time.sleep(1)
+        print("do something")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555, debug=True)
