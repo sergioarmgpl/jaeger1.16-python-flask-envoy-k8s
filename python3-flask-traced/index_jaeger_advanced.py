@@ -120,7 +120,7 @@ def span_example8():
     return "secuencial spans"
 
 @app.route("/example9")
-def span_example8():
+def span_example9():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("step1") as span1:
         time.sleep(1)
