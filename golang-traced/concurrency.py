@@ -14,7 +14,9 @@ async def task2(what, when, loop):
 #    loop.stop()
 
 loop = asyncio.get_event_loop()
+
 loop.create_task(task1('first hello', 2))
 loop.create_task(task2('second hello', 4,loop))
+
 loop.run_forever()
 loop.close()

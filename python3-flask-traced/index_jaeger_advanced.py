@@ -121,16 +121,22 @@ def span_example8():
 
 @app.route("/example9")
 def span_example9():
+    async def span_example9_coroutine():
+        await asyncio.gather(
+            span_parallel_example9_process1(),
+            span_parallel_example9_process2()
+        )
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("step1") as span1:
         time.sleep(1)
-        loop = asyncio.get_event_loop()
-        loop.create_task(span_parallel_example9_process1())
-        loop.create_task(span_parallel_example9_process2(loop))
-        loop.run_forever()
-        loop.close()
-        
+        asyncio.run(span_example9_coroutine())    
     return "secuencial spans"
+
+async def span_example9_coroutine():
+    await asyncio.gather(
+        span_parallel_example9_process1(),
+        span_parallel_example9_process2()
+    )
 
 def span_parallel_example7_process1():
     tracer = trace.get_tracer(__name__)
