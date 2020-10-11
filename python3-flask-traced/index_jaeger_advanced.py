@@ -102,7 +102,36 @@ def span_call_child():
     with tracer.start_as_current_span("step1") as span1:
         requests.get("http://jaeger-app-2-srv-2:5555/example6")
     return "simple call"
-   
+
+@app.route("/example7")
+def span_example7():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("step1") as span1:
+        span_parallel_example7_process1()
+        span_parallel_example7_process2()
+    return "individual spans"
+
+@app.route("/example8")
+def span_example8():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("step1") as span1:
+        span_parallel_example8_process1()
+    return "secuencial spans"
+
+def span_parallel_example7_process1():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("process1") as span1:
+        print("do something")
+
+def span_parallel_example7_process2():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("process2") as span1:
+        print("do something")
+
+def span_parallel_example8_process1():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("process1") as span1:
+        span_parallel_example7_process2()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555, debug=True)

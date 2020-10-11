@@ -9,10 +9,9 @@ async def task2(what, when, loop):
     print(what)
     loop.stop()
 
-async def end(loop, when):
-    await asyncio.sleep(when)
-    loop.stop()
-
+#async def end(loop, when):
+#    await asyncio.sleep(when)
+#    loop.stop()
 
 loop = asyncio.get_event_loop()
 
