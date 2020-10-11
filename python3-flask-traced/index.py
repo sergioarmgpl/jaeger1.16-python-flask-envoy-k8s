@@ -2,7 +2,6 @@
 import time
 import flask
 import requests
-from flask import request
 
 import opentelemetry.ext.requests
 from opentelemetry import trace
@@ -37,9 +36,9 @@ tracer = trace.get_tracer(__name__)
 
 # create a JaegerSpanExporter
 jaeger_exporter = jaeger.JaegerSpanExporter(
-    service_name="TracedService2", 
-#    agent_host_name="simplest-agent.observability.svc.cluster.local", 
-    agent_host_name="jaeger-agent.observability.svc.cluster.local", 
+    service_name="TracedService1", 
+    agent_host_name="simplest-agent.observability.svc.cluster.local", 
+#    agent_host_name="jaeger-agent.observability.svc.cluster.local", 
     agent_port=6831,
     # optional: configure also collector
     # collector_host_name='localhost',
@@ -62,23 +61,48 @@ FlaskInstrumentor().instrument_app(app)
 opentelemetry.ext.requests.RequestsInstrumentor().instrument()
 #--------------------------------------------------------------
 
-@app.route("/example4")
+
+
+@app.route("/example1")
 def span_attributes():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("step1") as span1:
         span1.set_attribute("attribute1","value1")
         with tracer.start_as_current_span("step2") as span2:
-            r = requests.get("http://jaeger-app-srv-2:5555/example1")
-            span2.set_attribute("attribute1",str(request.headers))
-            span2.set_attribute("response",str(r))
-    return "distribute context 1"
+            span2.set_attribute("attribute2","value2")
+    return "span and attributes"
 
-@app.route("/example6")
-def span_end_road():
+@app.route("/example3")
+def span_attributes_slow():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("step1") as span1:
-        span1.add_event("end of the road",{"error": "no no no"})
-    return "distribute context 2"
+        time.sleep(1)
+        span1.set_attribute("attribute1","value1")
+        time.sleep(1)
+        with tracer.start_as_current_span("step2") as span2:
+            time.sleep(1)
+            span2.set_attribute("attribute2","value2")
+            time.sleep(1)
+    return "span and attributes slow version"
+
+@app.route("/example2")
+def span_errors():
+    try:
+        n = 100/0
+    except Exception as e:
+        tracer = trace.get_tracer(__name__)
+        with tracer.start_as_current_span("step1"):
+            with tracer.start_as_current_span("step2") as span:
+                span.add_event("error occured",{"error": str(e)})
+        return "error",500
+
+@app.route("/example5")
+def span_call_child():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("step1") as span1:
+        requests.get("http://jaeger-app-2-srv-2:5555/example6")
+    return "simple call"
+   
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555, debug=True)
