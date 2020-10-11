@@ -14,6 +14,7 @@ from opentelemetry.ext.flask import FlaskInstrumentor
 from opentelemetry.sdk.trace.export import BatchExportSpanProcessor
 from opentelemetry.ext.wsgi import OpenTelemetryMiddleware
 
+import asyncio
 
 '''
 jaeger_exporter = jaeger.JaegerSpanExporter(
@@ -105,6 +106,7 @@ def span_call_child():
 def span_example7():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("step1") as span1:
+        time.sleep(1)
         span_parallel_example7_process1()
         span_parallel_example7_process2()
     return "individual spans"
@@ -113,23 +115,52 @@ def span_example7():
 def span_example8():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("step1") as span1:
+        time.sleep(1)
         span_parallel_example8_process1()
+    return "secuencial spans"
+
+@app.route("/example9")
+def span_example8():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("step1") as span1:
+        time.sleep(1)
+        loop = asyncio.get_event_loop()
+        loop.create_task(span_parallel_example9_process1())
+        loop.create_task(span_parallel_example9_process2(loop))
+        loop.run_forever()
+        loop.close()
+        
     return "secuencial spans"
 
 def span_parallel_example7_process1():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("process1") as span1:
+        time.sleep(1)
         print("do something")
 
 def span_parallel_example7_process2():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("process2") as span1:
+        time.sleep(1)
         print("do something")
 
 def span_parallel_example8_process1():
     tracer = trace.get_tracer(__name__)
     with tracer.start_as_current_span("process1") as span1:
         span_parallel_example7_process2()
+
+async def span_parallel_example9_process2(loop):
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("process2") as span1:
+        time.sleep(1)
+        print("do something")
+        loop.stop()
+
+async def span_parallel_example9_process1():
+    tracer = trace.get_tracer(__name__)
+    with tracer.start_as_current_span("process1") as span1:
+        span_parallel_example7_process2()
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555, debug=True)
